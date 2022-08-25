@@ -28,7 +28,13 @@ connection.connect(function(err){
 
 
 router.get('/',(req,res)=>{
-    res.send("customer get");
+    let query = "SELECT * FROM customer"
+
+    connection.query(query,(err,rows) =>{
+        if(err) throw err
+
+        res.send(rows)
+    })
 })
 
 
@@ -54,6 +60,46 @@ router.post('/',(req,res)=>{
 
 
 })
+
+
+router.put('/',(req, res) =>{
+    const id = req.body.id
+    const name = req.body.name
+    const address = req.body.address
+    const salary = req.body.salary
+
+    var query = "UPDATE customer SET name=?, address=?, salary=? WHERE id=?"
+
+    connection.query(query, [name, address, salary, id], (err,rows) =>{
+        if(err) console.log(err);
+
+        if(rows.affectedRows > 0){
+            res.send({'message' : 'Customer Updated'})
+        }else{
+            res.send({'message' : 'Not such a customer found'})
+        }
+    })
+})
+
+
+router.delete('/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id);
+
+    var query = "DELETE FROM customer WHERE id=?";
+
+    connection.query(query, [id], (err, rows) => {
+        if (err) console.log(err);
+
+        if (rows.affectedRows > 0) {
+            res.send({ 'message': 'Customer deleted' })
+        } else {
+            res.send({ 'message': 'Not such a customer found' })
+        }
+    })
+})
+
+
 
 
 module.exports = router
