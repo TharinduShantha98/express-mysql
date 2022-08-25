@@ -62,5 +62,43 @@ router.get('/',(req, res) =>{
 })
 
 
+router.put('/',(req, res) =>{
+    const code = req.body.code
+    const name = req.body.name
+    const discription = req.body.discription
+    const price = req.body.price
+    const qtyOnHand = req.body.qtyOnHand
+
+    var query = "UPDATE items SET name=?, discription=?, price=?, qtyOnHand=? WHERE code=?"
+
+    connection.query(query, [name, discription, price, qtyOnHand, code], (err,rows) =>{
+        if(err) console.log(err);
+
+        if(rows.affectedRows > 0){
+            res.send({'message' : 'Item Successfully Updated'})
+        }else{
+            res.send({'message' : 'Item not found'})
+        }
+    })
+})
+
+router.delete('/:code', (req, res) => {
+    const code = req.params.code
+
+    var query = "DELETE FROM items WHERE code=?";
+
+    connection.query(query, [code], (err, rows) => {
+        if (err) console.log(err);
+
+        if (rows.affectedRows > 0) {
+            res.send({ 'message': 'Item deleted' })
+        } else {
+            res.send({ 'message': 'Item not found' })
+        }
+    })
+})
+
+
+
 
 module.exports = router
