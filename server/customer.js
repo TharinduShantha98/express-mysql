@@ -27,7 +27,14 @@ connection.connect(function(err){
 
 
 
+router.get('/',(req,res)=>{
+    res.send("customer get");
+})
+
+
 router.post('/',(req,res)=>{
+
+    console.log("hellooo");
     const id = req.body.id
     const name = req.body.name
     const address = req.body.address
