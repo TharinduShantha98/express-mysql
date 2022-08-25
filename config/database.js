@@ -3,6 +3,7 @@ module.exports ={
         host: 'localhost',
         user: 'root',
         password:'1234',
-        database: 'express_pos'
+        database: 'express_pos',
+       // insecureAuth : true
     }
 }
