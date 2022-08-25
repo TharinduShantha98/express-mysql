@@ -14,6 +14,7 @@ app.get('/',(req,res)=>{
 
 app.use('/api/customer',customer);
 app.use('/api/item',item)
+app.use('/api/order',order)
 app.listen(4000,()=>{console.log(`server is running on http://localhost:${4000}`)});
 
 

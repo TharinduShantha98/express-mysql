@@ -60,6 +60,57 @@ connection.connect(function (err) {
 
 
 
+router.post('/',(req, res) =>{
+    const orderId = req.body.orderId
+    const date = req.body.date
+    const customerId = req.body.customerId
+    let orderDetail =[];
+    orderDetail = req.body.orderDetail
+
+    console.log(orderDetail);
+    let queryOrder = "INSERT INTO orders (orderId, date, customerId) VALUES (?,?,?)"
+
+
+    connection.query(queryOrder, [orderId, date, customerId], (err) =>{
+        if(err){
+            res.send({"message" : "duplicate entry"})
+        }else{
+
+            for(let i=0; i < orderDetail.length; i++){
+
+                let orderId = orderDetail[i].orderId;
+                let itemCode = orderDetail[i].itemCode;
+                let orderQty = orderDetail[i].orderQty;
+                let cost = orderDetail[i].cost;
+
+                let queryOrderDetail = "INSERT INTO orderdetail (orderId,itemCode,orderQty,cost) VALUES (?,?,?,?)"
+
+
+
+                connection.query(queryOrderDetail,[orderId,
+                   itemCode,
+                   orderQty,
+                   cost], (err)=>{
+
+
+                    if(err){
+                        res.send({
+                            message:err,
+                        })
+                    }else{
+                        res.send({message : "Order successfully added!"})
+                    }
+                })
+
+
+            }
+
+
+
+
+        }
+    })
+})
 
 
 
